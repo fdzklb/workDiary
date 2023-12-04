@@ -37,7 +37,7 @@ const MyReact = (() => {
   }
 
   const useState = (iniState) => {
-    const _state = createStateSetter(stateIndex, iniState);
+    const _state = createState(stateIndex, iniState);
     const _setState = createStateSetter(stateIndex);
     stateIndex ++;
     return [_state, _setState];
@@ -46,21 +46,23 @@ const MyReact = (() => {
   return useState;
 })();
 
-useEffect
+```
 
+### useEffect
+```js
 const MyReact = (() => {
   const callbackArr = [];
   const depArr = [];
   let index = 0;
 
-  const useEffect = (callback, dep) => {
+  const useEffect = (callback, deps) => {
     if(typeof(callback) !== 'function') {
       throw new TypeError('回调函数必须是函数！');
     };
-    if(dep!== undefined && !Array.isArray(dep)) {
+    if(deps!== undefined && !Array.isArray(deps)) {
       throw new TypeError('依赖必须是数组结构！');
     };
-    const isChange = depArr[index] ? depArr[index].some((dep, index) => dep !== dep[index]) : true;
+    const isChange = depArr[index] ? depArr[index].some((dep, index) => !Object.is(dep, deps[index])) : true;
 
     if(isChage) {
       callback();
@@ -70,4 +72,37 @@ const MyReact = (() => {
   };
   return useEffect
 })();
+
+```
+
+### useMemo
+```js
+const MyReact = (() => {
+  const callbackArr = [];
+  const depArr = [];
+  const resultArr = []
+  let index = 0;
+
+  const useMemo = (callback, deps) => {
+    if(typeof(callback) !== 'function') {
+      throw new TypeError('回调函数必须是函数！');
+    };
+  
+    if(deps!== undefined && !Array.isArray(deps)) {
+      throw new TypeError('依赖必须是数组结构！');
+    };
+  
+    const isChange = depArr[index] ? depArr[index].some((dep, index) => !Object.is(dep, deps[index])) : true;
+
+    if(isChanged) {
+      resultArr[index] = callback();
+      return resultArr[index];
+    } else {
+      return resultArr[index];
+    }
+    depArr[index] = dep;
+    index++;
+  };
+})();
+
 ```
