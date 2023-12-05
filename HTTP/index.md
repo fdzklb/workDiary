@@ -88,6 +88,22 @@ TCP的主要特点包括：
   > Via 是为了追踪客户端与服务器之间的请求和响应报文的传输路径
   - If-Match
   > 只有当 If-Match 的字段值跟 ETag 值匹配一致时，服务器才会接受请求。服务器会比对 If-Match 的字段值和资源的 ETag 值，仅当两者一致时，才会执行请求。反之，则返回状态码 412 Precondition Failed 的响应。还可以使用星号（*）指定 If-Match 的字段值。针对这种情况，服务器将会忽略 ETag 的值，只要资源存在就处理请求。
+  - If-None-Match
+  > 只有在 If-None-Match 的字段值与 ETag 值不一致时，可处理该请求。与 If-Match 首部字段的作用相反
   - If-Modified-Since
-  > 浏览器在发送HTTP请求时，会把浏览器端缓存页面的最后修改时间一起发到服务器去，服务器会把这个时间与服务器上实际文件的最后修改时间进行比较。如果时间一致，那么返回HTTP状态码304（不返回文件内容）,和Last-Modified 搭配使用
-
+  >  只能用于GET/HEAD方法。浏览器在发送HTTP请求时，会把浏览器端缓存资源的最后修改时间一起发到服务器去，服务器会把这个时间与服务器上实际文件的最后修改时间进行比较。如果时间一致，那么返回HTTP状态码304（不返回文件内容）,和Last-Modified 搭配使用
+  - If-Unmodified-Since
+  > 主要用于post等非安全操作，如果自上次资源没有被修改(更新)，则执行此次操作，否则返回412
+  [](https://blog.csdn.net/weixin_45462681/article/details/122454304)
+- Authorization
+>请求资源需要登录验证时，Authorization 是用来告知服务器，用户代理的认证信息（证书值）
+- Expect
+- If-Range
+> 如果If-Range与资源Etag值匹配，那么Range范围值会被处理，否则全部返回资源
+- Max-Forwards
+- Proxy-Authorization
+>接收到从代理服务器发来的认证质询时，客户端会发送包含首部字段Proxy-Authorization 的请求，以告知服务器认证所需要的信息。
+- Referer
+> 该请求发起的页面uri
+- TE
+- User-Agent
