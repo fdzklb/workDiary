@@ -6,3 +6,6 @@
 - express Node
 - 小程序
 - vue
+
+cookie session token
+![cookie session token](https://zhuanlan.zhihu.com/p/625995458)

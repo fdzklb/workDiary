@@ -32,6 +32,7 @@ TCP的主要特点包括：
 4. 数据链路层  
 
 ### http状态码
+- 101 Switching Protocols
 - 204
  >该状态码代表服务器接收的请求已成功处理，但在返回的响应报文中不含实体的主体部分。另外，也不允许返回任何实体的主体。比如，当从浏览器发出请求处理后，返回 204 响应，那么浏览器显示的页面不发生更新。
  场景: 1. 保存表单编辑内容 2.代替部分200,节省流量数据
@@ -52,8 +53,8 @@ TCP的主要特点包括：
 ### HTTP 首部字段结构
 #### 通用首部字段
 1. Cache-Control
-![Request首部字段](./img/Cache-Control-Request-Header.png)
-![Response首部字段](./img/Response-Header.png)
+![Cache-Control Request首部字段](./img/Cache-Control-Request-Header.png)
+![Cache-Control Response首部字段](./img/Response-Header.png)
   - no-cache
   >客户端发送的请求中如果包含 no-cache 指令，“中间”的缓存服务器必须把客户端请求转发给源服务器
   > Cache-Control: no-cache=Location 
@@ -86,6 +87,7 @@ TCP的主要特点包括：
   > 用于检测 HTTP 协议及其他协议是否可使用更高的版本进行通信
   - Via
   > Via 是为了追踪客户端与服务器之间的请求和响应报文的传输路径
+  #### 请求首部字段
   - If-Match
   > 只有当 If-Match 的字段值跟 ETag 值匹配一致时，服务器才会接受请求。服务器会比对 If-Match 的字段值和资源的 ETag 值，仅当两者一致时，才会执行请求。反之，则返回状态码 412 Precondition Failed 的响应。还可以使用星号（*）指定 If-Match 的字段值。针对这种情况，服务器将会忽略 ETag 的值，只要资源存在就处理请求。
   - If-None-Match
@@ -101,9 +103,46 @@ TCP的主要特点包括：
 - If-Range
 > 如果If-Range与资源Etag值匹配，那么Range范围值会被处理，否则全部返回资源
 - Max-Forwards
+- Max-Forwards
+> 每次转发数值减 1。当数值变 0 时返回响应
 - Proxy-Authorization
 >接收到从代理服务器发来的认证质询时，客户端会发送包含首部字段Proxy-Authorization 的请求，以告知服务器认证所需要的信息。
 - Referer
 > 该请求发起的页面uri
 - TE
+> 告知服务器客户端能够处理响应的传输编码方式及相对优先级。
 - User-Agent
+
+#### 响应首部字段
+- Accept-Ranges
+> 当不能处理范围请求时，Accept-Ranges: none
+- Age
+> 告知客户端，源服务器在多久前创建了响应
+- ETag
+> 强 ETag('usagi-1234') 值和弱 Tag 值(W/"usagi-1234")。弱 ETag 值只用于提示资源是否相同。只有资源发生了根本改变，产生差异时才会改变 ETag 值。这时，会在字段值最开始处附加 W/。
+- Location
+> 重定位
+- Proxy-Authenticate
+> 把由代理服务器所要求的认证信息发送给客户端
+- Retry-After
+> 告知客户端应该在多久之后再次发送请求。主要配合状态码 503 Service Unavailable 响应，或 3xx Redirect 响应一起使用
+- Server 
+> 告知客户端当前服务器上安装的 HTTP 服务器应用程序的信息。不单单会标出服务器上的软件应用名称，还有可能包括版本号和安装时启用的可选项
+- Vary 
+>首部字段指定获取资源的请求时，如果使用的 Accept-Language 字段的值相同，那么就直接从缓存返回响应。反之，则需要先从源服务器端获取资源后才能作为响应返回
+- WWW-Authenticate
+- Content-MD5
+> 客户端会对接收的报文主体执行相同的 MD5 算法，然后与首部字段 Content-MD5 的字段值比较, 其目的在于检查报文主体在传输过程中是否保持完整，以及确认传输到达。
+- Set-Cookie
+
+### HTTP 的缺点
+1. 通信使用明文不加密，内容泄露被窃听
+2. 不验证通信方身份，被伪装
+3. 无法证明报文完整性，被篡改
+#### 解决办法
+1. 
+- 加密通信线路。如通过和 SSL（Secure Socket Layer，安全套接层）或TLS（Transport Layer Security，安全层传输协议）的组合使用，加密 HTTP 的通信内容。
+- 加密内容
+2. 查明对手的证书
+#### HTTP+ 通信加密(SSL) + 认证 + 完整性保护=HTTPS
+1. 但是使用更多的内存、流量、和cpu资源 花钱买证书
