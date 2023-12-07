@@ -23,11 +23,10 @@
       callback(); 
     }
   }
- 
-
-
   const myPromise = new MyPromise(123);
   const myPromise = new MyPromise(function(resolve, reject) => {
 
   })
  ```
+
+ #### Proxy
