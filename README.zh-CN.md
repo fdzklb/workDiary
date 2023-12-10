@@ -93,6 +93,7 @@ const arr = new Array(1,2,3)
 arr.__proto__ === Array.prototype
 ```
  ![这是图片](./public/img/yuanxin.png)  
+ ![这是图片](./public/img/prototype.png)  
 作用： 
 - 存放一些属性和方法
 - 在javaScript中实现继承

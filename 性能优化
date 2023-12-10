@@ -1,0 +1,11 @@
+#### 代码层面
+ - 提高代码质量，避免不必要的渲染
+ - useCallback useMemo 的合理运用
+ - 少写闭包 监定时器记得清理
+ - iconfont 代替图片图标
+ - 换掉lodash moment
+
+ #### 打包配置
+ #### 网络 http缓存
+ #### 浏览器渲染
+ #### 使用 Web Workers
