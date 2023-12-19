@@ -1,0 +1,19 @@
+.drag-div {
+    width: 66rem;
+    display: flex;
+    justify-content: start;
+    border: 1px solid #61dafb;
+    flex-wrap: wrap;
+  
+    >div {
+      display: inline-block;
+      display: flex;
+      margin: 1rem;
+      justify-content: center;
+      align-items: center;
+      padding: .7rem 4rem;
+      background-color: chocolate;
+      color: #fff;
+      font-size: 16px;
+    }
+  }
