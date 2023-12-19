@@ -105,6 +105,81 @@ const MyReact = (() => {
   };
 })();
 
+
+## React hooks
+
+```js
+useState简单实现
+
+const MyReact = (() => {
+  const state = [];
+  const stateSetter = [];
+  let stateIndex = 0;
+
+  const creatState = (stateIndex, iniState) => {
+    return state[stateIndex] = state[stateIndex] === undefined ? iniState : state[stateIndex];
+  }
+
+  const creatStateSetter = (stateIndex) => {
+    if(!stateSetter[stateIndex]) {
+      const setState = (newState) => {
+        if(typeof(newState) === 'function') {
+          state[stateIndex] = newState(state(stateIndex));
+        } else {
+          state[stateIndex] = newState;
+        }
+        render();
+      };
+      stateSetter[stateIndex] = setState;
+    }
+    return stateSetter[stateIndex];
+  }
+
+  const render = () => {
+    stateIndex = 0;
+    ReactDom.render(
+      <App />,
+      document.querySelector('#app')
+    )
+  }
+
+  const useState = (iniState) => {
+    const _state = creatState(stateIndex, iniState);
+    const _setState = creatStateSetter(stateIndex);
+    stateIndex ++;
+    return [_state, _setState];
+  }
+
+  return useState;
+})();
+
+useEffect
+
+const MyReact = (() => {
+  const callbackArr = [];
+  const depArr = [];
+  let index = 0;
+
+  const useEffect = (callback, dep) => {
+    if(typeof(callback) !== 'function') {
+      throw new TypeError('回调函数必须是函数！');
+    };
+    if(dep!== undefined && !Array.isArray(dep)) {
+      throw new TypeError('依赖必须是数组结构！');
+    };
+    const isChange = depArr[index] ? depArr[index].some((dep, index) => dep !== dep[index]) : true;
+
+    if(isChage) {
+      callback();
+    };
+    depArr[index] = dep;
+    index++;
+  };
+  return useEffect
+})();
+```
+
+
 ```
 #### useEffect使用场景
 1. 函数被 useEffect 内部所使用，但为了避免频繁 useEffect 的频繁调用，所以我包一下；
